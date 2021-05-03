@@ -82,6 +82,16 @@ class Ular():  # MEMBUAT CLASS SNAKE/ULAR
         self.gambar2.append([blok, [10, 10]])  # PENAMBAHAN PANJANG ULAR
 
 
+class makanan():  # CLASS MAKANAN
+    def __init__(self, size):
+        self.pos = [random.randrange(10, 780, 10),  # MAKANAN DIACAK
+                    random.randrange(10, 430, 10)]  # MAKANAN DI DALAM PAPAN PERMAINAN
+        self.gambar = pg.Surface((10*size, 10*size))  # UKURAN MAKANAN
+        self.gambar.fill((255, 0, 0))  # WARNA MAKANAN MAKANAN
+
+        # FUNGSI DEF BUAT MAKANAN BONUS
+
+
 class Permainan():  # CLASS PERMAINAN
     def __init__(self, kecepatan, size=1):
         # UKURAN BACKGROUND WAKTU PERMAINAN DIMULAI
