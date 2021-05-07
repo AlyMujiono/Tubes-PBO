@@ -239,7 +239,7 @@ class Permainan():  # CLASS PERMAINAN
                 self.layar.blit(x[0], x[1])
                 a += 1
 
-                for i in range(a):
+                for i in range(a):  # Bonus
                     if a % 5 == 0:
                         # MAKANAN BONUS
                         if self.Ular.periksa_makanan(self.makanan.pos) % 5 == 0:
