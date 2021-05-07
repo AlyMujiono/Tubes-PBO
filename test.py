@@ -238,17 +238,21 @@ class Permainan():  # CLASS PERMAINAN
                         self.over()
                 self.layar.blit(x[0], x[1])
                 a += 1
+
+                for i in range(a):
+                    if a % 5 == 0:
+                        # MAKANAN BONUS
+                        if self.Ular.periksa_makanan(self.makanan.pos) % 5 == 0:
+                            if self.Ular.periksa_makanan(self.Bonus.pos) == True:
+                                self.Ular.memakan_bonus()
+                                del self.Bonus
+                                self.Bonus = Bonus(self.size)
+                            self.layar.blit(self.Bonus.gambar, self.Bonus.pos)
+
             if self.Ular.periksa_makanan(self.makanan.pos) == True:
                 self.Ular.memakan()
                 del self.makanan
                 self.makanan = makanan(self.size)
-
-            if self.Ular.periksa_makanan(self.makanan.pos) % 5 == 0:  # MAKANAN BONUS
-                if self.Ular.periksa_makanan(self.Bonus.pos) == True:
-                    self.Ular.memakan_bonus()
-                    del self.Bonus
-                    self.Bonus = Bonus(self.size)
-                self.layar.blit(self.Bonus.gambar, self.Bonus.pos)
 
             self.layar.blit(self.makanan.gambar, self.makanan.pos)
 
