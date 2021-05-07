@@ -82,7 +82,8 @@ class Ular():  # MEMBUAT CLASS SNAKE/ULAR
         self.gambar2.append([blok, [10, 10]])  # PENAMBAHAN PANJANG ULAR
 
         if self.skor % 10 == 0:  # PENAMBAHAN KECEPATAN SETIAP 10 KALI MEMAKAN MAKANAN
-            self.kecepatan += 1
+            self.kecepatan *= 2
+
 
 class makanan():  # CLASS MAKANAN
     def __init__(self, size):
