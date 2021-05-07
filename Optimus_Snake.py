@@ -365,30 +365,20 @@ class Menu_awal():
 
     def mulai3(self):  # Menu pilihan untuk level permainan pada pilihan Normal
         self.b1 = '(150, 300,100,50),"Mudah", [(0,255,0), (0,150,0)], action = self.m'
-        self.b2 = '(283, 300,100,50),"Normal", [(0,255,0), (0,150,0)], self.n'
-        self.b3 = '(417, 300,100,50),"Susah", [(0,255,0), (0,150,0)], action = self.s'
-        self.b4 = '(550, 300,100,50),"Ahli", [(0,255,0), (0,150,0)], action = self.a'
-        self.tombol2 = [self.b1, self.b2, self.b3, self.b4]
+        self.b2 = '(550, 300,100,50),"Susah", [(0,255,0), (0,150,0)], self.s'
+        self.tombol2 = [self.b1, self.b2]
 
     def mulai4(self):  # Menu pilihan untuk level permainan pada pilihan Besar
         self.size = 2
         self.b1 = '(150, 300,100,50),"Mudah", [(0,255,0), (0,150,0)], action = self.m'
-        self.b2 = '(283, 300,100,50),"Normal", [(0,255,0), (0,150,0)], self.n'
-        self.b3 = '(417, 300,100,50),"Susah", [(0,255,0), (0,150,0)], action = self.s'
-        self.b4 = '(550, 300,100,50),"Ahli", [(0,255,0), (0,150,0)], action = self.a'
-        self.tombol2 = [self.b1, self.b2, self.b3, self.b4]
+        self.b2 = '(550, 300,100,50),"Susah", [(0,255,0), (0,150,0)], self.s'
+        self.tombol2 = [self.b1, self.b2]
 
     def m(self):  # KECEPATAN MODE EASY
         mulai(0.25, self.size)
 
-    def n(self):  # KECEPATAN MODE NORMAL
+    def s(self):  # KECEPATAN MODE NORMAL
         mulai(0.5, self.size)
-
-    def s(self):  # KECEPATAN MODE HARD
-        mulai(1, self.size)
-
-    def a(self):  # KECEPATAN MODE EXPERT
-        mulai(2, self.size)
 
     def exit(self):  # KELUAR
         sys.exit()
