@@ -1,7 +1,7 @@
 import pygame as pg  # MENGGUNAKAN FUNGSI IMPORT PYGAME
 import sys  # MENGGUNAKAN FUNGSI IMPORT SYS
 import random  # MENGGUNAKAN FUNGSI IMPORT RANDOM
-##
+
 
 def tabrak(x1, y1, x2, y2, x3, y3, x4, y4):  # BENTUK YG DITABRAK (TEMBOK)
     if (x3+x4) > x1 > x3 and (y3+y4) > y1 > y3 or (x3+x4) > x2 > x3 and (y3+y4) > y2 > y3:
@@ -84,6 +84,13 @@ class Ular():  # MEMBUAT CLASS SNAKE/ULAR
         if self.skor % 10 == 0:  # PENAMBAHAN KECEPATAN SETIAP 10 KALI MEMAKAN MAKANAN
             self.kecepatan *= 2
 
+    def memakan_bonus(self):  # KETIKA MEMAKAN MAKANAN
+        self.skor += 5  # PENAMBAHAN SKOR KALO ABIS MAKAN MAKANAN
+        # UKURAN BADAN YANG DITAMBAHKAN
+        blok = pg.Surface((10*self.size, 10*self.size))
+        blok.fill((0, 255, 0))  # WARNA PENAMBAHAN BADAN
+        self.gambar2.append([blok, [10, 10]])  # PENAMBAHAN PANJANG ULAR
+
 
 class makanan():  # CLASS MAKANAN
     def __init__(self, size):
@@ -92,13 +99,19 @@ class makanan():  # CLASS MAKANAN
         self.gambar = pg.Surface((10*size, 10*size))  # UKURAN MAKANAN
         self.gambar.fill((255, 0, 0))  # WARNA MAKANAN MAKANAN
 
-        # FUNGSI DEF BUAT MAKANAN BONUS
+
+class Bonus():  # CLASS MAKANAN BONUS
+    def __init__(self, size):
+        self.pos = [random.randrange(10, 780, 10),  # MAKANAN DIACAK
+                    random.randrange(10, 430, 10)]  # MAKANAN DI DALAM PAPAN PERMAINAN
+        self.gambar = pg.Surface((15*size, 15*size))  # UKURAN MAKANAN
+        self.gambar.fill((0, 0, 0))
 
 
 class Permainan():  # CLASS PERMAINAN
     def __init__(self, kecepatan, size=1):
         # UKURAN BACKGROUND WAKTU PERMAINAN DIMULAI
-        self.layar = pg.display.set_mode((800, 450))
+        self.layar = pg.display.set_mode((800, 490))
         pg.display.set_caption('Game Snake Optimus')
         self.Ular = Ular(kecepatan, size)
         self.blok2 = []
@@ -125,6 +138,7 @@ class Permainan():  # CLASS PERMAINAN
             t.fill(warna)
             self.blok2.append([t, [790, x]])
         self.makanan = makanan(size)  # POSISI MAKANAN DIDALAM DINDING
+        self.Bonus = Bonus(size)
 
     def over(self):  # KETIKA PERMAINAN BERAKHIR
         while 1:
@@ -209,7 +223,8 @@ class Permainan():  # CLASS PERMAINAN
     def loop(self):
         self.permainan_selesai = False
         while self.permainan_selesai != True:
-            self.layar.fill((35, 38, 117))  # WARNA BACKGOUND SAAT GAME DIMULAI
+            # WARNA BACKGROUND SAAT GAME DIMULAI
+            self.layar.fill((35, 38, 117))
             self.Ular.update()
             for x in self.blok2:
                 # KONDISI JIKA ULAR MENABRAK DINDING
@@ -223,11 +238,24 @@ class Permainan():  # CLASS PERMAINAN
                         self.over()
                 self.layar.blit(x[0], x[1])
                 a += 1
+
+                for i in range(a):  # Bonus
+                    if a % 5 == 0:
+                        # MAKANAN BONUS
+                        if self.Ular.periksa_makanan(self.makanan.pos) % 5 == 0:
+                            if self.Ular.periksa_makanan(self.Bonus.pos) == True:
+                                self.Ular.memakan_bonus()
+                                del self.Bonus
+                                self.Bonus = Bonus(self.size)
+                            self.layar.blit(self.Bonus.gambar, self.Bonus.pos)
+
             if self.Ular.periksa_makanan(self.makanan.pos) == True:
                 self.Ular.memakan()
                 del self.makanan
                 self.makanan = makanan(self.size)
+
             self.layar.blit(self.makanan.gambar, self.makanan.pos)
+
             self.layar.blit(self.Ular.gambar, self.Ular.pos)
             for event in pg.event.get():  # MENGARAHKAN ULAR DI DALAM PERMAINAN
                 if event.type == pg.QUIT:
