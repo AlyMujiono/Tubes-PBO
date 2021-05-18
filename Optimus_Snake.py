@@ -403,7 +403,7 @@ class Menu_awal():
         mulai(0.15, self.size)
 
     def s(self):  # KECEPATAN MODE NORMAL
-        mulai(0.5, self.size)
+        mulai(0.25, self.size)
 
     def exit(self):  # KELUAR
         sys.exit()
