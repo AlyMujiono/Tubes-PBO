@@ -81,7 +81,7 @@ class Ular():  # MEMBUAT CLASS SNAKE/ULAR
         blok.fill((0, 255, 0))  # WARNA PENAMBAHAN BADAN
         self.gambar2.append([blok, [10, 10]])  # PENAMBAHAN PANJANG ULAR
         if self.skor % 10 == 0:
-            self.kecepatan *= 2
+            self.kecepatan += 0.05
 
     def memakan_bonus(self):  # KETIKA MEMAKAN MAKANAN
         self.skor += 5  # PENAMBAHAN SKOR KALO ABIS MAKAN MAKANAN
@@ -400,7 +400,7 @@ class Menu_awal():
         self.tombol2 = [self.b1, self.b2]
 
     def m(self):  # KECEPATAN MODE EASY
-        mulai(0.1, self.size)
+        mulai(0.15, self.size)
 
     def s(self):  # KECEPATAN MODE NORMAL
         mulai(0.5, self.size)
