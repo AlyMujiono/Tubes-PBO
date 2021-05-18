@@ -80,8 +80,7 @@ class Ular():  # MEMBUAT CLASS SNAKE/ULAR
         blok = pg.Surface((10*self.size, 10*self.size))
         blok.fill((0, 255, 0))  # WARNA PENAMBAHAN BADAN
         self.gambar2.append([blok, [10, 10]])  # PENAMBAHAN PANJANG ULAR
-
-        if self.skor % 10 == 0:  # PENAMBAHAN KECEPATAN SETIAP 10 KALI MEMAKAN MAKANAN
+        if self.skor % 10 == 0:
             self.kecepatan *= 2
 
     def memakan_bonus(self):  # KETIKA MEMAKAN MAKANAN
@@ -111,7 +110,7 @@ class Bonus():  # CLASS MAKANAN BONUS
 class Permainan():  # CLASS PERMAINAN
     def __init__(self, kecepatan, size=1):
         # UKURAN BACKGROUND WAKTU PERMAINAN DIMULAI
-        self.layar = pg.display.set_mode((800, 490))
+        self.layar = pg.display.set_mode((800, 450))
         pg.display.set_caption('Game Snake Optimus')
         self.Ular = Ular(kecepatan, size)
         self.blok2 = []
@@ -239,21 +238,19 @@ class Permainan():  # CLASS PERMAINAN
                 self.layar.blit(x[0], x[1])
                 a += 1
 
-                for i in range(a):  # Bonus
-                    if a % 5 == 0:
-                        # MAKANAN BONUS
-                        if self.Ular.periksa_makanan(self.makanan.pos) % 5 == 0:
-                            if self.Ular.periksa_makanan(self.Bonus.pos) == True:
-                                self.Ular.memakan_bonus()
-                                del self.Bonus
-                                self.Bonus = Bonus(self.size)
-                            self.layar.blit(self.Bonus.gambar, self.Bonus.pos)
+                ## MEMUSINGKAN ##
+            if a % 5 == 0 and a != 0:
+                if self.Ular.periksa_makanan(self.makanan.pos) % 5 == 0:
+                    if self.Ular.periksa_makanan(self.Bonus.pos) == True:
+                        self.Ular.memakan_bonus()
+                        del self.Bonus
+                        self.Bonus = Bonus(self.size)
+                    self.layar.blit(self.Bonus.gambar, self.Bonus.pos)
 
             if self.Ular.periksa_makanan(self.makanan.pos) == True:
                 self.Ular.memakan()
                 del self.makanan
                 self.makanan = makanan(self.size)
-
             self.layar.blit(self.makanan.gambar, self.makanan.pos)
 
             self.layar.blit(self.Ular.gambar, self.Ular.pos)
@@ -403,7 +400,7 @@ class Menu_awal():
         self.tombol2 = [self.b1, self.b2]
 
     def m(self):  # KECEPATAN MODE EASY
-        mulai(0.25, self.size)
+        mulai(0.1, self.size)
 
     def s(self):  # KECEPATAN MODE NORMAL
         mulai(0.5, self.size)
