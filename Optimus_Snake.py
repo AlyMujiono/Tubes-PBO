@@ -83,6 +83,7 @@ class Ular():  # MEMBUAT CLASS SNAKE/ULAR
         if self.skor % 10 == 0:
             self.kecepatan += 0.05
 
+
     def memakan_bonus(self):  # KETIKA MEMAKAN MAKANAN
         self.skor += 5  # PENAMBAHAN SKOR KALO ABIS MAKAN MAKANAN
         # UKURAN BADAN YANG DITAMBAHKAN
@@ -91,7 +92,7 @@ class Ular():  # MEMBUAT CLASS SNAKE/ULAR
         self.gambar2.append([blok, [10, 10]])  # PENAMBAHAN PANJANG ULAR
 
 
-class makanan():  # CLASS MAKANAN
+class Makanan():  # CLASS MAKANAN
     def __init__(self, size):
         self.pos = [random.randrange(10, 780, 10),  # MAKANAN DIACAK
                     random.randrange(10, 430, 10)]  # MAKANAN DI DALAM PAPAN PERMAINAN
@@ -136,7 +137,7 @@ class Permainan():  # CLASS PERMAINAN
             t = pg.Surface((10, 10))
             t.fill(warna)
             self.blok2.append([t, [790, x]])
-        self.makanan = makanan(size)  # POSISI MAKANAN DIDALAM DINDING
+        self.Makanan = Makanan(size)  # POSISI MAKANAN DIDALAM DINDING
         self.Bonus = Bonus(size)
 
     def over(self):  # KETIKA PERMAINAN BERAKHIR
@@ -238,20 +239,22 @@ class Permainan():  # CLASS PERMAINAN
                 self.layar.blit(x[0], x[1])
                 a += 1
 
-                ## MEMUSINGKAN ##
+                 ## MEMUSINGKAN ##
+                 
             if a % 5 == 0 and a != 0:
-                if self.Ular.periksa_makanan(self.makanan.pos) % 5 == 0:
+                if self.Ular.periksa_makanan(self.Makanan.pos) % 5 == 0:
                     if self.Ular.periksa_makanan(self.Bonus.pos) == True:
                         self.Ular.memakan_bonus()
                         del self.Bonus
                         self.Bonus = Bonus(self.size)
                     self.layar.blit(self.Bonus.gambar, self.Bonus.pos)
-
-            if self.Ular.periksa_makanan(self.makanan.pos) == True:
+                
+            if self.Ular.periksa_makanan(self.Makanan.pos) == True:
                 self.Ular.memakan()
-                del self.makanan
-                self.makanan = makanan(self.size)
-            self.layar.blit(self.makanan.gambar, self.makanan.pos)
+                del self.Makanan
+                self.Makanan = Makanan(self.size)
+            self.layar.blit(self.Makanan.gambar, self.Makanan.pos)
+            
 
             self.layar.blit(self.Ular.gambar, self.Ular.pos)
             for event in pg.event.get():  # MENGARAHKAN ULAR DI DALAM PERMAINAN
@@ -281,7 +284,7 @@ class Permainan():  # CLASS PERMAINAN
             pg.display.update()
 
 
-class Menu_awal():
+class MenuAwal():
     def __init__(self):
         # UKURAN TAMPILAN PADA MENU AWAL
         self.layar = pg.display.set_mode((800, 450))
@@ -400,10 +403,10 @@ class Menu_awal():
         self.tombol2 = [self.b1, self.b2]
 
     def m(self):  # KECEPATAN MODE EASY
-        mulai(0.15, self.size)
+        mulai(0.1, self.size)
 
     def s(self):  # KECEPATAN MODE NORMAL
-        mulai(0.25, self.size)
+        mulai(0.2, self.size)
 
     def exit(self):  # KELUAR
         sys.exit()
@@ -426,7 +429,7 @@ def ulang():  # FUNGSI RESTART YANG MENGGUNAKAN FUNGSI GLOBAL
 def menu():  # FUNGSI MENU YANG MENGGUNAKAN FUNGSI GLOBAL
     global m
     pg.init()
-    m = Menu_awal()
+    m = MenuAwal()
     m.mainloop()
 
 
