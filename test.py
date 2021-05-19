@@ -1,4 +1,4 @@
-import pygame as pg  # MENGGUNAKAN FUNGSI IMPORT PYGAME
+import pygame as pg  # MENGGUNAKAN FUNGSI IMPORT PYGAME pygame
 import sys  # MENGGUNAKAN FUNGSI IMPORT SYS
 import random  # MENGGUNAKAN FUNGSI IMPORT RANDOM
 
