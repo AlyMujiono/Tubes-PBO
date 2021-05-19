@@ -10,7 +10,7 @@ def tabrak(x1, y1, x2, y2, x3, y3, x4, y4):  # BENTUK YG DITABRAK (TEMBOK)
         return False
 
 
-def tabrak2(x1, y1, x2, y2, x3, y3, x4, y4, size):  # BENTUK YG DITABRAK (MAKANANan)
+def tabrak2(x1, y1, x2, y2, x3, y3, x4, y4, size):  # BENTUK YG DITABRAK (MAKANANAN)
     if (x3+(11*size)) > x1 > x3-1 and (y3+(11*size)) > y1 > y3-1 or (x3+(11*size)) > x2 > x3-1 and (y3+(11*size)) > y2 > y3-1:
         return True
     else:
@@ -24,8 +24,23 @@ def tabrak3(x1, y1, x2, y2, x3, y3, x4, y4, size):
     else:
         return False
 
+class Makanan():  # CLASS MAKANAN
+    def __init__(self, size):
+        self.pos = [random.randrange(10, 780, 10),  # MAKANAN DIACAK
+                    random.randrange(10, 430, 10)]  # MAKANAN DI DALAM PAPAN PERMAINAN
+        self.gambar = pg.Surface((10*size, 10*size))  # UKURAN MAKANAN
+        self.gambar.fill((255, 0, 0))  # WARNA MAKANAN MAKANAN
+
+
+class Bonus():  # CLASS MAKANAN BONUS
+    def __init__(self, size):
+        self.pos = [random.randrange(10, 780, 10),  # MAKANAN DIACAK
+                    random.randrange(10, 430, 10)]  # MAKANAN DI DALAM PAPAN PERMAINAN
+        self.gambar = pg.Surface((15*size, 15*size))  # UKURAN MAKANAN
+        self.gambar.fill((0, 0, 0))
 
 class Ular():  # MEMBUAT CLASS SNAKE/ULAR
+    cek_bonus = bool(1)
     def __init__(self, kecepatan, size):
         self.pos = [20, 20]  # POSISI AWAL SI ULAR
         self.gambar = pg.Surface((10*size, 10*size))  # KEPALA PUNYA ULAR
@@ -36,6 +51,10 @@ class Ular():  # MEMBUAT CLASS SNAKE/ULAR
         self.pos_akhir = [[20, 20]]
         self.arah = [0, 0]
         self.skor = 0
+        self.banyakmakan = 0
+        self.Makanan = Makanan(size)
+        self.Bonus = Bonus(size)
+        self.layar = pg.display.set_mode((800, 450))
 
     def kanan(self):  # ARAH KLIK KEKANAN
         self.arah = [self.kecepatan, 0]
@@ -77,12 +96,11 @@ class Ular():  # MEMBUAT CLASS SNAKE/ULAR
     def memakan(self):  # KETIKA MEMAKAN MAKANAN
         self.skor += 1  # PENAMBAHAN SKOR KALO ABIS MAKAN MAKANAN
         # UKURAN BADAN YANG DITAMBAHKAN
+        self.banyakmakan += 1
         blok = pg.Surface((10*self.size, 10*self.size))
         blok.fill((0, 255, 0))  # WARNA PENAMBAHAN BADAN
         self.gambar2.append([blok, [10, 10]])  # PENAMBAHAN PANJANG ULAR
-        if self.skor % 10 == 0:
-            self.kecepatan += 0.05
-
+        
 
     def memakan_bonus(self):  # KETIKA MEMAKAN MAKANAN
         self.skor += 5  # PENAMBAHAN SKOR KALO ABIS MAKAN MAKANAN
@@ -91,22 +109,26 @@ class Ular():  # MEMBUAT CLASS SNAKE/ULAR
         blok.fill((0, 255, 0))  # WARNA PENAMBAHAN BADAN
         self.gambar2.append([blok, [10, 10]])  # PENAMBAHAN PANJANG ULAR
 
+    def banyak_makan(self):
+        if self.periksa_makanan(self.Makanan.pos) == True:
+            self.memakan()
+            del self.Makanan
+            self.Makanan = Makanan(self.size)
+            if self.banyakmakan % 10 == 0:
+                self.kecepatan += 0.05
+        self.layar.blit(self.Makanan.gambar, self.Makanan.pos)
 
-class Makanan():  # CLASS MAKANAN
-    def __init__(self, size):
-        self.pos = [random.randrange(10, 780, 10),  # MAKANAN DIACAK
-                    random.randrange(10, 430, 10)]  # MAKANAN DI DALAM PAPAN PERMAINAN
-        self.gambar = pg.Surface((10*size, 10*size))  # UKURAN MAKANAN
-        self.gambar.fill((255, 0, 0))  # WARNA MAKANAN MAKANAN
+        if self.banyakmakan > 5 and self.banyakmakan % 5 == 0:
+            Ular.cek_bonus = 1
 
-
-class Bonus():  # CLASS MAKANAN BONUS
-    def __init__(self, size):
-        self.pos = [random.randrange(10, 780, 10),  # MAKANAN DIACAK
-                    random.randrange(10, 430, 10)]  # MAKANAN DI DALAM PAPAN PERMAINAN
-        self.gambar = pg.Surface((15*size, 15*size))  # UKURAN MAKANAN
-        self.gambar.fill((0, 0, 0))
-
+        if self.banyakmakan % 5 == 0 and self.banyakmakan != 0 and Ular.cek_bonus == 1:
+            self.layar.blit(self.Bonus.gambar, self.Bonus.pos)
+            if self.periksa_makanan(self.Bonus.pos) == True:
+                self.memakan_bonus()
+                del self.Bonus
+                self.Bonus = Bonus(self.size)
+                Ular.cek_bonus = 0
+                
 
 class Permainan():  # CLASS PERMAINAN
     def __init__(self, kecepatan, size=1):
@@ -137,8 +159,6 @@ class Permainan():  # CLASS PERMAINAN
             t = pg.Surface((10, 10))
             t.fill(warna)
             self.blok2.append([t, [790, x]])
-        self.Makanan = Makanan(size)  # POSISI MAKANAN DIDALAM DINDING
-        self.Bonus = Bonus(size)
 
     def over(self):  # KETIKA PERMAINAN BERAKHIR
         while 1:
@@ -226,6 +246,7 @@ class Permainan():  # CLASS PERMAINAN
             # WARNA BACKGROUND SAAT GAME DIMULAI
             self.layar.fill((35, 38, 117))
             self.Ular.update()
+            self.Ular.banyak_makan()
             for x in self.blok2:
                 # KONDISI JIKA ULAR MENABRAK DINDING
                 if self.Ular.periksa_tabrakan(x[1]) == True:
@@ -239,23 +260,7 @@ class Permainan():  # CLASS PERMAINAN
                 self.layar.blit(x[0], x[1])
                 a += 1
 
-                 ## MEMUSINGKAN ##
-                 
-            if a % 5 == 0 and a != 0:
-                if self.Ular.periksa_makanan(self.Makanan.pos) % 5 == 0:
-                    if self.Ular.periksa_makanan(self.Bonus.pos) == True:
-                        self.Ular.memakan_bonus()
-                        del self.Bonus
-                        self.Bonus = Bonus(self.size)
-                    self.layar.blit(self.Bonus.gambar, self.Bonus.pos)
-                
-            if self.Ular.periksa_makanan(self.Makanan.pos) == True:
-                self.Ular.memakan()
-                del self.Makanan
-                self.Makanan = Makanan(self.size)
-            self.layar.blit(self.Makanan.gambar, self.Makanan.pos)
-            
-
+            ## MEMUSINGKAN ##     
             self.layar.blit(self.Ular.gambar, self.Ular.pos)
             for event in pg.event.get():  # MENGARAHKAN ULAR DI DALAM PERMAINAN
                 if event.type == pg.QUIT:
