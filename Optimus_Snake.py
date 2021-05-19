@@ -259,8 +259,7 @@ class Permainan():  # CLASS PERMAINAN
                         self.over()
                 self.layar.blit(x[0], x[1])
                 a += 1
-
-            ## MEMUSINGKAN ##     
+  
             self.layar.blit(self.Ular.gambar, self.Ular.pos)
             for event in pg.event.get():  # MENGARAHKAN ULAR DI DALAM PERMAINAN
                 if event.type == pg.QUIT:
