@@ -40,7 +40,6 @@ class Bonus():  # CLASS MAKANAN BONUS
         self.gambar.fill((0, 0, 0))
 
 class Ular():  # MEMBUAT CLASS SNAKE/ULAR
-    cek_bonus = bool(1)
     def __init__(self, kecepatan, size):
         self.pos = [20, 20]  # POSISI AWAL SI ULAR
         self.gambar = pg.Surface((10*size, 10*size))  # KEPALA PUNYA ULAR
@@ -55,6 +54,8 @@ class Ular():  # MEMBUAT CLASS SNAKE/ULAR
         self.Makanan = Makanan(size)
         self.Bonus = Bonus(size)
         self.layar = pg.display.set_mode((800, 450))
+        self.tambahcepat = 0
+        
 
     def kanan(self):  # ARAH KLIK KEKANAN
         self.arah = [self.kecepatan, 0]
@@ -97,6 +98,7 @@ class Ular():  # MEMBUAT CLASS SNAKE/ULAR
         self.skor += 1  # PENAMBAHAN SKOR KALO ABIS MAKAN MAKANAN
         # UKURAN BADAN YANG DITAMBAHKAN
         self.banyakmakan += 1
+        self.tambahcepat +=1
         blok = pg.Surface((10*self.size, 10*self.size))
         blok.fill((0, 255, 0))  # WARNA PENAMBAHAN BADAN
         self.gambar2.append([blok, [10, 10]])  # PENAMBAHAN PANJANG ULAR
@@ -105,6 +107,7 @@ class Ular():  # MEMBUAT CLASS SNAKE/ULAR
     def memakan_bonus(self):  # KETIKA MEMAKAN MAKANAN
         self.skor += 5  # PENAMBAHAN SKOR KALO ABIS MAKAN MAKANAN
         # UKURAN BADAN YANG DITAMBAHKAN
+        self.banyakmakan = 0
         blok = pg.Surface((10*self.size, 10*self.size))
         blok.fill((0, 255, 0))  # WARNA PENAMBAHAN BADAN
         self.gambar2.append([blok, [10, 10]])  # PENAMBAHAN PANJANG ULAR
@@ -114,20 +117,16 @@ class Ular():  # MEMBUAT CLASS SNAKE/ULAR
             self.memakan()
             del self.Makanan
             self.Makanan = Makanan(self.size)
-            if self.banyakmakan % 10 == 0:
+            if self.tambahcepat % 10 == 0:
                 self.kecepatan += 0.05
         self.layar.blit(self.Makanan.gambar, self.Makanan.pos)
 
-        if self.banyakmakan > 5 and self.banyakmakan % 5 == 0:
-            Ular.cek_bonus = 1
-
-        if self.banyakmakan % 5 == 0 and self.banyakmakan != 0 and Ular.cek_bonus == 1:
+        if self.banyakmakan % 5 == 0 and self.banyakmakan != 0:
             self.layar.blit(self.Bonus.gambar, self.Bonus.pos)
             if self.periksa_makanan(self.Bonus.pos) == True:
                 self.memakan_bonus()
                 del self.Bonus
                 self.Bonus = Bonus(self.size)
-                Ular.cek_bonus = 0
                 
 
 class Permainan():  # CLASS PERMAINAN
@@ -259,7 +258,8 @@ class Permainan():  # CLASS PERMAINAN
                         self.over()
                 self.layar.blit(x[0], x[1])
                 a += 1
-  
+
+            ## MEMUSINGKAN ##     
             self.layar.blit(self.Ular.gambar, self.Ular.pos)
             for event in pg.event.get():  # MENGARAHKAN ULAR DI DALAM PERMAINAN
                 if event.type == pg.QUIT:
@@ -390,17 +390,7 @@ class MenuAwal():
                             self.click0 = False
             pg.display.update()
 
-    def mulai(self):  # Menu pilihan untuk tampilan size permainan
-        self.b1 = '(150, 300,100,50),"Normal", [(0,255,0), (0,150,0)], action = self.mulai3'
-        self.b2 = '(550, 300,100,50),"Besar", [(0,255,0), (0,150,0)], action = self.mulai4'
-        self.tombol2 = [self.b1, self.b2]
-
-    def mulai3(self):  # Menu pilihan untuk level permainan pada pilihan Normal
-        self.b1 = '(150, 300,100,50),"Mudah", [(0,255,0), (0,150,0)], action = self.m'
-        self.b2 = '(550, 300,100,50),"Susah", [(0,255,0), (0,150,0)], self.s'
-        self.tombol2 = [self.b1, self.b2]
-
-    def mulai4(self):  # Menu pilihan untuk level permainan pada pilihan Besar
+    def mulai(self):  # Menu pilihan untuk level permainan pada pilihan Besar
         self.size = 2
         self.b1 = '(150, 300,100,50),"Mudah", [(0,255,0), (0,150,0)], action = self.m'
         self.b2 = '(550, 300,100,50),"Susah", [(0,255,0), (0,150,0)], self.s'
@@ -409,12 +399,11 @@ class MenuAwal():
     def m(self):  # KECEPATAN MODE EASY
         mulai(0.1, self.size)
 
-    def s(self):  # KECEPATAN MODE NORMAL
+    def s(self):  # KECEPATAN MODE SUSAH
         mulai(0.2, self.size)
 
     def exit(self):  # KELUAR
         sys.exit()
-
 
 def mulai(kecepatan, size):  # FUNGSI START PADA GAME YANG MENGGUNAKAN FUNGSI GLOBAL
     global g, m
