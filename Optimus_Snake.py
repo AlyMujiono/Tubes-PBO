@@ -390,17 +390,7 @@ class MenuAwal():
                             self.click0 = False
             pg.display.update()
 
-    def mulai(self):  # Menu pilihan untuk tampilan size permainan
-        self.b1 = '(150, 300,100,50),"Normal", [(0,255,0), (0,150,0)], action = self.mulai3'
-        self.b2 = '(550, 300,100,50),"Besar", [(0,255,0), (0,150,0)], action = self.mulai4'
-        self.tombol2 = [self.b1, self.b2]
-
-    def mulai3(self):  # Menu pilihan untuk level permainan pada pilihan Normal
-        self.b1 = '(150, 300,100,50),"Mudah", [(0,255,0), (0,150,0)], action = self.m'
-        self.b2 = '(550, 300,100,50),"Susah", [(0,255,0), (0,150,0)], self.s'
-        self.tombol2 = [self.b1, self.b2]
-
-    def mulai4(self):  # Menu pilihan untuk level permainan pada pilihan Besar
+    def mulai(self):  # Menu pilihan untuk level permainan pada pilihan Besar
         self.size = 2
         self.b1 = '(150, 300,100,50),"Mudah", [(0,255,0), (0,150,0)], action = self.m'
         self.b2 = '(550, 300,100,50),"Susah", [(0,255,0), (0,150,0)], self.s'
@@ -409,7 +399,7 @@ class MenuAwal():
     def m(self):  # KECEPATAN MODE EASY
         mulai(0.1, self.size)
 
-    def s(self):  # KECEPATAN MODE NORMAL
+    def s(self):  # KECEPATAN MODE SUSAH
         mulai(0.2, self.size)
 
     def exit(self):  # KELUAR
